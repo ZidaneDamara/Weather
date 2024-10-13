@@ -5,16 +5,18 @@ const getAll = async () => {
     const db = await getDB(process.env);
     return await db.cities.find({});
   } catch (error) {
-    console.log(error.message);
+    console.log("Error retrieving cities:", error.message);
+    return [];
   }
 };
 
 const insert = async (city_name) => {
   try {
     const db = await getDB(process.env);
-    return await db.cities.insert({ city_name: city_name });
+    return await db.cities.insert({ city_name });
   } catch (error) {
-    console.log(error.message);
+    console.log("Error inserting city:", error.message);
+    return null;
   }
 };
 

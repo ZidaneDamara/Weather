@@ -22,9 +22,9 @@ const getDB = async ({ NODE_ENV }) => {
     console.log("Database Connected!");
     return db;
   } catch (error) {
-    console.log(error.message);
+    console.log("Error connecting to database:", error.message);
     return null;
   }
-};  
+};
 
 module.exports = getDB;

@@ -6,17 +6,17 @@ router.get("/", async (req, res) => {
     const cities = await getAll();
     res.json({ cities });
   } catch (error) {
-    res.json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 
 router.post("/", async (req, res) => {
   try {
-    const { city } = req.body;
-    const result = await insert(city);
+    const { city_name } = req.body;
+    const result = await insert(city_name);
     res.json(result);
   } catch (error) {
-    res.json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 });
 
