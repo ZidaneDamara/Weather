@@ -4,10 +4,13 @@ import "./output.css";
 import "./input.css";
 
 import AddCity from "./components/AddCity.js";
+import Weather from "./components/Weather.js";
+import ShowWeather from "./components/ShowWeather";
 
 function App() {
   const [city, setCity] = useState("");
   const [cities, setCities] = useState([]);
+  const [weather, setWeather] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,7 +25,13 @@ function App() {
 
   const getCities = async () => {
     const { data } = await axios.get("/api/cities");
-    setCities(data.cities.map((city) => city.name));
+    setCities(data.cities.map((city) => city.city_name));
+  };
+
+  const getWeather = async (city) => {
+    const { data } = await axios(`/api/weather/${city}`);
+    console.log(data);
+    setWeather(data);
   };
 
   useEffect(() => {
@@ -30,11 +39,11 @@ function App() {
   }, []);
 
   return (
-    <div className="container text-center mx-auto my-20 max-w-md">
-      <h1 className="my-6 text-3xl font-bold text-slate-800">
+    <div className="container mx-auto my-20 max-w-2xl text-center">
+      <h1 className="my-6 text-4xl font-bold text-gray-800">
         Awesome Weather Dashboard
       </h1>
-      <p className="text-lg text-slate-600 mb-6">
+      <p className="text-lg text-gray-600 mb-8">
         Enter a city to get current weather information
       </p>
 
@@ -43,6 +52,13 @@ function App() {
         handleInputChange={(e) => setCity(e.target.value)}
         newCity={city}
       />
+
+      <Weather
+        cities={cities}
+        handleSelectCity={(e) => getWeather(e.target.value)}
+      />
+
+      {weather && <ShowWeather data={weather} />}
     </div>
   );
 }
